@@ -27,6 +27,8 @@ const EatBotIntro = () => {
     }
   ];
 
+  
+
   const MessageBubble = ({ feature, index }) => (
     <motion.div
       initial={{ opacity: 0, x: feature.position === 'left' ? -50 : 50, y: 20 }}
@@ -54,8 +56,8 @@ const EatBotIntro = () => {
         >
           <Box
             sx={{
-              width: 60,
-              height: 60,
+              width: 50,
+              height: 50,
               borderRadius: '50%',
               background: 'linear-gradient(45deg, #FF0099, #e91e63)',
               display: 'flex',
@@ -65,7 +67,7 @@ const EatBotIntro = () => {
               boxShadow: '0 4px 20px rgba(233, 30, 99, 0.3)',
             }}
           >
-            <SmartToyIcon sx={{ fontSize: 35 }} />
+            <SmartToyIcon sx={{ fontSize: 30 }} />
           </Box>
         </motion.div>
         
@@ -74,10 +76,10 @@ const EatBotIntro = () => {
           sx={{
             background: 'linear-gradient(to right, #fff, #fafafa)',
             borderRadius: 4,
-            p: 3,
+            p: 2,
             position: 'relative',
             flex: 1,
-            maxWidth: '500px',
+            maxWidth: '450px',
             border: '2px solid rgba(233, 30, 99, 0.1)',
             boxShadow: '0 4px 20px rgba(0, 0, 0, 0.05)',
             transition: 'all 0.3s ease',
@@ -169,7 +171,7 @@ const EatBotIntro = () => {
                 letterSpacing: '0.5px',
               }}
             >
-              음악을 더 맛있게 만들어드려요 ✨
+              4가지 AI봇이 음악을 더 맛있게 만들어드려요 ✨
             </Typography>
           </motion.div>
         </motion.div>

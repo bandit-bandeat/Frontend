@@ -1,6 +1,6 @@
 import React from 'react';
-import { Box } from '@mui/material';
 import ChatTemplate from './ChatTemplate';
+import { BotContainer } from '../styles/BotStyles';
 
 const RecommendBot = () => {
   const handleMessage = async (message) => {
@@ -8,20 +8,13 @@ const RecommendBot = () => {
   };
 
   return (
-    <Box sx={{ 
-      width: '100%',
-      height: { xs: '100%', md: 'calc(100vh - 80px)' },
-      display: 'flex',
-      flexDirection: 'column',
-      p: { xs: 1, sm: 2},
-      overflow: 'auto'
-    }}>
-    <ChatTemplate
-      botName="음악 추천 봇"
-      onSendMessage={handleMessage}
-      placeholder="어떤 음악을 찾으시나요?"
-    />
-  </Box>
+    <BotContainer>
+      <ChatTemplate
+        botName="음악 추천 봇"
+        onSendMessage={handleMessage}
+        placeholder="어떤 음악을 찾으시나요?"
+      />
+    </BotContainer>
   );
 };
 
