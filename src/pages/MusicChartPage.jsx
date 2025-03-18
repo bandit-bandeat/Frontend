@@ -1,51 +1,36 @@
-import React, { useState } from 'react';
-import {
-  Box,
-  Container,
-  Typography,
-  CardContent,
-  Select,
-  MenuItem,
-  FormControl,
-  InputLabel,
-  IconButton,
-} from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import { Box, Container, Typography, CardContent, Select, MenuItem, FormControl, InputLabel, IconButton } from '@mui/material';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { ChartCard, RankTypography, pageStyles } from '../styles/MusicChartStyles';
-
-// 더미 데이터
-const mockMusic = [
-  {
-    id: 1,
-    title: "Butter",
-    artist: "BTS",
-    genre: "POP",
-  },
-  {
-    id: 2,
-    title: "Dynamite",
-    artist: "BTS",
-    genre: "POP",
-  },
-  {
-    id: 3,
-    title: "Super Shy",
-    artist: "NewJeans",
-    genre: "POP",
-  }
-];
-
-const genres = ["모든 장르", "POP", "ROCK", "JAZZ", "HIPHOP", "R&B", "ELECTRONIC"];
+import { fetchAllMusic } from '../api/musicApi';
 
 const MusicChartPage = () => {
   const navigate = useNavigate();
   const [selectedGenre, setSelectedGenre] = useState("모든 장르");
+  const [musicList, setMusicList] = useState([]);
+  const [genres, setGenres] = useState(["모든 장르"]);
+
+  useEffect(() => {
+    const fetchMusic = async () => {
+      try {
+        const data = await fetchAllMusic();
+        setMusicList(data);
+
+        const uniqueGenres = new Set(data.flatMap(music => music.genres));
+        setGenres(["모든 장르", ...uniqueGenres]);
+      } catch (error) {
+        console.error('Failed to fetch music data:', error);
+      }
+    };
+
+    fetchMusic();
+  }, []);
 
   const filteredMusic = selectedGenre === "모든 장르" 
-    ? mockMusic 
-    : mockMusic.filter(music => music.genre === selectedGenre);
+    ? musicList 
+    : musicList.filter(music => music.genres.includes(selectedGenre));
 
   return (
     <Box sx={pageStyles.mainBox}>
@@ -82,7 +67,7 @@ const MusicChartPage = () => {
           <Box sx={pageStyles.chartList}>
             {filteredMusic.map((music, index) => (
               <motion.div
-                key={music.id}
+                key={music.musicId}
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.1 * index }}
@@ -102,13 +87,13 @@ const MusicChartPage = () => {
                         {music.title}
                       </Typography>
                       <Typography variant="subtitle1" sx={pageStyles.artistName}>
-                        {music.artist}
+                        {music.singer}
                       </Typography>
                     </CardContent>
                     <IconButton 
                       size="small"
                       sx={pageStyles.infoButton}
-                      onClick={() => navigate(`/music/${music.id}`)}
+                      onClick={() => navigate(`/music/${music.musicId}`)}
                     >
                       <InfoOutlinedIcon fontSize="small" />
                     </IconButton>
