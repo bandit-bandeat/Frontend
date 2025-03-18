@@ -23,6 +23,21 @@ export const login = async (email, password) => {
   }
 };
 
+export const logout = async () => {
+  try {
+    const token = localStorage.getItem('accessToken');
+    await axios.post(`${API_BASE_URL}/auth/logout`, {}, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      },
+      withCredentials: true
+    });
+  } finally {
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('email');
+  }
+};
+
 export const signup = async (email, password, nickname, birth, preGenres) => {
   try {
     console.log('Sending signup request:', { email, password, nickname, birth, preGenres });

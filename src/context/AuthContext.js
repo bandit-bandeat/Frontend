@@ -1,34 +1,40 @@
-import React, { createContext, useState, useContext } from 'react';
-import axios from 'axios';
+import React, { createContext, useState, useEffect, useContext } from 'react';
+import { logout } from '../api/authApi';
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(() => {
+    return !!localStorage.getItem('accessToken');
+  });
 
-  const login = () => {
-    setIsLoggedIn(true);
-  };
-
-  const logout = async () => {
+  const handleLogout = async () => {
     try {
-      console.log('Sending logout request');
-      const response = await axios.post('http://18.139.20.145:8080/auth/logout', {}, {
-        withCredentials: true,
-      });
-      console.log('Logout response:', response.data);
+      await logout();
       setIsLoggedIn(false);
-      console.log('User logged out, isLoggedIn:', isLoggedIn);
     } catch (error) {
       console.error('Logout error:', error);
+      setIsLoggedIn(false);
     }
   };
 
+  const value = {
+    isLoggedIn,
+    setIsLoggedIn,
+    logout: handleLogout
+  };
+
   return (
-    <AuthContext.Provider value={{ isLoggedIn, login, logout }}>
+    <AuthContext.Provider value={value}>
       {children}
     </AuthContext.Provider>
   );
 };
 
-export const useAuth = () => useContext(AuthContext);
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+  return context;
+};

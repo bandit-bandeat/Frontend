@@ -51,6 +51,15 @@ const Navbar = () => {
     navigate('/');
   };
 
+  const handleLogout = async () => {
+    try {
+      await logout();
+      navigate('/');
+    } catch (error) {
+      console.error('Logout failed:', error);
+    }
+  };
+
   return (
     <StyledAppBar position="sticky">
       <StyledToolbar>
@@ -87,10 +96,7 @@ const Navbar = () => {
                 <Avatar sx={{ width: 40, height: 40 }} />
               </IconButton>
               <Button
-                onClick={() => {
-                  logout();
-                  navigate('/');
-                }}
+                onClick={handleLogout}
                 color="primary"
                 sx={{ 
                   fontSize: '1.05rem',
