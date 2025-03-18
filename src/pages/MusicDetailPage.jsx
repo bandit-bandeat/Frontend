@@ -1,39 +1,40 @@
-import React from 'react';
-import {
-  Box,
-  Container,
-  Typography,
-  Card,
-  CardMedia,
-  CardContent,
-  IconButton,
-  Button,
-} from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import { Box, Container, Typography, Card, CardMedia, CardContent, Button } from '@mui/material';
 import { useParams, useNavigate } from 'react-router-dom';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { motion } from 'framer-motion';
-
-// 상세 정보를 포함한 더미 데이터
-const musicDetails = {
-  1: {
-    id: 1,
-    title: "Butter",
-    artist: "BTS",
-    genre: "POP",
-    image: "https://i.ytimg.com/vi/WMweEpGlu_U/maxresdefault.jpg",
-    youtubeLink: "https://www.youtube.com/watch?v=WMweEpGlu_U",
-    releaseDate: "2021-05-21",
-    description: "BTS의 디지털 싱글 'Butter'는 신나는 댄스 팝 장르의 곡입니다...",
-    lyrics: "Side step, right, left to my beat...",
-  },
-  // ... 다른 곡들의 상세 정보
-};
+import { fetchAllMusic } from '../api/musicApi';
 
 const MusicDetailPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const music = musicDetails[id];
+  const [music, setMusic] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchMusicDetail = async () => {
+      try {
+        const data = await fetchAllMusic();
+        const musicData = data.find(music => music.musicId === parseInt(id));
+        setMusic(musicData);
+      } catch (error) {
+        console.error('Failed to fetch music detail:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchMusicDetail();
+  }, [id]);
+
+  if (loading) {
+    return <Typography>Loading...</Typography>;
+  }
+
+  if (!music) {
+    return <Typography>Failed to load music details.</Typography>;
+  }
 
   return (
     <Box sx={{ bgcolor: 'black', minHeight: '100vh', color: 'white', py: 4 }}>
@@ -68,44 +69,25 @@ const MusicDetailPage = () => {
                 {music.title}
               </Typography>
               <Typography variant="h6" sx={{ color: 'rgba(255,255,255,0.7)', mb: 3 }}>
-                {music.artist}
+                {music.singer}
               </Typography>
               
               <Box sx={{ mb: 3 }}>
                 <Typography variant="body1" sx={{ color: 'rgba(255,255,255,0.9)' }}>
-                  Genre: {music.genre}
-                </Typography>
-                <Typography variant="body1" sx={{ color: 'rgba(255,255,255,0.9)' }}>
-                  Release Date: {music.releaseDate}
+                  Genre: {music.genres.join(', ')}
                 </Typography>
               </Box>
-
-              <Typography variant="body1" sx={{ color: 'rgba(255,255,255,0.8)', mb: 4 }}>
-                {music.description}
-              </Typography>
 
               <Button
                 variant="contained"
                 color="secondary"
                 startIcon={<PlayArrowIcon />}
-                onClick={() => window.open(music.youtubeLink, '_blank')}
+                onClick={() => window.open(music.youtube, '_blank')}
                 sx={{ mb: 4 }}
               >
                 Play on YouTube
               </Button>
-
-              <Typography variant="h6" sx={{ color: 'white', mb: 2 }}>
-                Lyrics
-              </Typography>
-              <Typography 
-                variant="body1" 
-                sx={{ 
-                  color: 'rgba(255,255,255,0.8)',
-                  whiteSpace: 'pre-line' 
-                }}
-              >
-                {music.lyrics}
-              </Typography>
+              
             </CardContent>
           </Card>
         </motion.div>
