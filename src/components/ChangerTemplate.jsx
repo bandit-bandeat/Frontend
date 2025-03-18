@@ -85,10 +85,19 @@ const ChangerTemplate = ({ botName, onSendForm, placeholder }) => {
 
         if (onSendForm) {
             const response = await onSendForm(formData);
-            const botMessage = { id: Date.now(), text: `${file.name}을 ${input} 형식으로 바꾼 결과는 다음과 같습니다.\n`,
-                isBot: true,
-                audioUrl: URL.createObjectURL(response)}; // 블롭을 URL로 변환
-            setMessages(prev => [...prev, botMessage]);
+            if (response instanceof Blob) {
+                const botMessage = { id: Date.now(), text: `${file.name}을 ${input} 형식으로 바꾼 결과는 다음과 같습니다.\n`,
+                    isBot: true,
+                    audioUrl: URL.createObjectURL(response)}; // 블롭을 URL로 변환
+                setMessages(prev => [...prev, botMessage]);
+            } else { // 에러가 발생했을 때
+                console.log(response);
+                const botMessage = {
+                    id: Date.now(), text: `${response}`,
+                    isBot: true};
+                setMessages(prev => [...prev, botMessage]);
+            }
+
         }
     };
 
