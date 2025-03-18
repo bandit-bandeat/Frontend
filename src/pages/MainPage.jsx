@@ -8,27 +8,34 @@ import PlaylistPlayIcon from '@mui/icons-material/PlaylistPlay';
 import PaletteIcon from '@mui/icons-material/Palette';
 import Lottie from 'lottie-react';
 import soundAnimation from '../assets/sound.json';
+import { useNavigate } from 'react-router-dom';
 
+
+// 클릭하면 해당 기능으로 이동하게 설정
 const features = [
   {
     icon: <AudiotrackIcon sx={{ fontSize: 60 }} />,
     title: "멜로디 생성",
-    description: "나만의 개성 있는 멜로디를 만들어보세요!"
+    description: "나만의 개성 있는 멜로디를 만들어보세요!",
+    page:"/create/music"
   },
   {
     icon: <PianoIcon sx={{ fontSize: 60 }} />,
     title: "코드 추천",
-    description: "장르에 맞는 최적의 코드 진행을 추천합니다!"
+    description: "장르에 맞는 최적의 코드 진행을 추천합니다!",
+    page: "/create/chord"
   },
   {
     icon: <PlaylistPlayIcon sx={{ fontSize: 60 }} />,
     title: "곡 추천",
-    description: "멤버들의 취향을 분석해 딱 맞는 곡을 찾아드려요!"
+    description: "멤버들의 취향을 분석해 딱 맞는 곡을 찾아드려요!",
+    page: "/create/recommend"
   },
   {
     icon: <PaletteIcon sx={{ fontSize: 60 }} />,
     title: "로고 생성",
-    description: "우리 밴드만의 특별한 로고를 디자인하세요!"
+    description: "우리 밴드만의 특별한 로고를 디자인하세요!",
+    page: "/create/image"
   }
 ];
 
@@ -56,6 +63,10 @@ const Footer = styled(Box)(({ theme }) => ({
 }));
 
 const MainPage = () => {
+    const navigate = useNavigate();
+    const handleClick = (page) => {
+        navigate(`${page}`);
+    };
   const renderHeroSection = () => (
     <Box sx={{
       height: '30vh',
@@ -130,6 +141,7 @@ const MainPage = () => {
               boxShadow: '0 12px 40px rgba(233,30,99,0.15)'
             },
           }}
+          onClick={() => handleClick(feature.page)}
         >
           <Box sx={{ color: '#e91e63', mb: 3 }}>{feature.icon}</Box>
           <Typography

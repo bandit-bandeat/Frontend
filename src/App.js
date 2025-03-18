@@ -15,6 +15,7 @@ import MusicBot from './components/MusicBot';
 import ChordBot from './components/ChordBot';
 import RecommendBot from './components/RecommendBot';
 import ImageBot from './components/ImageBot';
+import Mp3Changer from './components/Mp3Changer';
 
 // Pages
 import MainPage from './pages/MainPage';
@@ -51,6 +52,7 @@ function App() {
               <Route path="chord" element={<ChordBot />} />
               <Route path="recommend" element={<RecommendBot />} />
               <Route path="image" element={<ImageBot />} />
+              <Route path="mp3" element={<Mp3Changer />} />
             </Route>
 
             {/* 커뮤니티 관련 라우트 */}

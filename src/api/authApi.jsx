@@ -12,6 +12,10 @@ export const login = async (email, password) => {
       }
     });
     console.log('Login response:', response.data);
+    // 엑세스토큰 저장
+    localStorage.setItem('accessToken',response.headers['accesstoken']);
+    // 이메일 저장
+    localStorage.setItem('email',response.data.userDto.email);
     return response.data;
   } catch (error) {
     console.error('Login error:', error.response ? error.response.data : error.message);

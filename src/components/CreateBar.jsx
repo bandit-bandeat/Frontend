@@ -14,6 +14,7 @@ import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import RecommendIcon from '@mui/icons-material/Recommend';
 import ImageIcon from '@mui/icons-material/Image';
 import SmartToyIcon from '@mui/icons-material/SmartToy';
+import Mic from '@mui/icons-material/Mic';
 import { Main, StyledListItem, drawerStyles } from '../styles/SidebarStyles';
 
 const pulseAnimation = {
@@ -44,6 +45,7 @@ const CreateBar = () => {
     { name: '코드 봇', icon: <AutoAwesomeIcon />, path: 'chord' },
     { name: '추천 봇', icon: <RecommendIcon />, path: 'recommend' },
     { name: '이미지 봇', icon: <ImageIcon />, path: 'image' },
+    { name: 'MP3 변환기', icon: <Mic />, path: 'mp3'}
   ];
 
   return (
