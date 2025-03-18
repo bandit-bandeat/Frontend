@@ -28,14 +28,6 @@ const MusicDetailPage = () => {
     fetchMusicDetail();
   }, [id]);
 
-  if (loading) {
-    return <Typography>Loading...</Typography>;
-  }
-
-  if (!music) {
-    return <Typography>Failed to load music details.</Typography>;
-  }
-
   return (
     <Box sx={{ bgcolor: 'black', minHeight: '100vh', color: 'white', py: 4 }}>
       <Container maxWidth="md">
@@ -44,52 +36,60 @@ const MusicDetailPage = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          <Button
-            startIcon={<ArrowBackIcon />}
-            sx={{ color: 'white', mb: 3 }}
-            onClick={() => navigate(-1)}
-          >
-            Back to Chart
-          </Button>
-
-          <Card sx={{ 
-            bgcolor: 'rgba(255,255,255,0.05)',
-            backdropFilter: 'blur(10px)',
-            borderRadius: 4,
-            overflow: 'hidden',
-          }}>
-            <CardMedia
-              component="img"
-              height="400"
-              image={music.image}
-              alt={music.title}
-            />
-            <CardContent sx={{ p: 4 }}>
-              <Typography variant="h4" sx={{ color: 'white', mb: 2 }}>
-                {music.title}
-              </Typography>
-              <Typography variant="h6" sx={{ color: 'rgba(255,255,255,0.7)', mb: 3 }}>
-                {music.singer}
-              </Typography>
-              
-              <Box sx={{ mb: 3 }}>
-                <Typography variant="body1" sx={{ color: 'rgba(255,255,255,0.9)' }}>
-                  Genre: {music.genres.join(', ')}
-                </Typography>
-              </Box>
-
+          {loading ? (
+            <Typography>Loading...</Typography>
+          ) : !music ? (
+            <Typography>Failed to load music details.</Typography>
+          ) : (
+            <>
               <Button
-                variant="contained"
-                color="secondary"
-                startIcon={<PlayArrowIcon />}
-                onClick={() => window.open(music.youtube, '_blank')}
-                sx={{ mb: 4 }}
+                startIcon={<ArrowBackIcon />}
+                sx={{ color: 'white', mb: 3 }}
+                onClick={() => navigate(-1)}
               >
-                Play on YouTube
+                Back to Chart
               </Button>
-              
-            </CardContent>
-          </Card>
+
+              <Card sx={{ 
+                bgcolor: 'rgba(255,255,255,0.05)',
+                backdropFilter: 'blur(10px)',
+                borderRadius: 4,
+                overflow: 'hidden',
+              }}>
+                <CardMedia
+                  component="img"
+                  height="400"
+                  image={music.image}
+                  alt={music.title}
+                />
+                <CardContent sx={{ p: 4 }}>
+                  <Typography variant="h4" sx={{ color: 'white', mb: 2 }}>
+                    {music.title}
+                  </Typography>
+                  <Typography variant="h6" sx={{ color: 'rgba(255,255,255,0.7)', mb: 3 }}>
+                    {music.singer}
+                  </Typography>
+                  
+                  <Box sx={{ mb: 3 }}>
+                    <Typography variant="body1" sx={{ color: 'rgba(255,255,255,0.9)' }}>
+                      Genre: {music.genres.join(', ')}
+                    </Typography>
+                  </Box>
+
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    startIcon={<PlayArrowIcon />}
+                    onClick={() => window.open(music.youtube, '_blank')}
+                    sx={{ mb: 4 }}
+                  >
+                    Play on YouTube
+                  </Button>
+                  
+                </CardContent>
+              </Card>
+            </>
+          )}
         </motion.div>
       </Container>
     </Box>

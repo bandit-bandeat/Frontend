@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Container, Typography, CardContent, Select, MenuItem, FormControl, InputLabel, IconButton } from '@mui/material';
+import { Box, Container, Typography, CardContent, Select, MenuItem, FormControl, InputLabel, IconButton, TextField } from '@mui/material';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
@@ -9,6 +9,7 @@ import { fetchAllMusic } from '../api/musicApi';
 const MusicChartPage = () => {
   const navigate = useNavigate();
   const [selectedGenre, setSelectedGenre] = useState("모든 장르");
+  const [searchQuery, setSearchQuery] = useState("");
   const [musicList, setMusicList] = useState([]);
   const [genres, setGenres] = useState(["모든 장르"]);
 
@@ -28,9 +29,10 @@ const MusicChartPage = () => {
     fetchMusic();
   }, []);
 
-  const filteredMusic = selectedGenre === "모든 장르" 
-    ? musicList 
-    : musicList.filter(music => music.genres.includes(selectedGenre));
+  const filteredMusic = musicList.filter(music => 
+    (selectedGenre === "모든 장르" || music.genres.includes(selectedGenre)) &&
+    (music.title.toLowerCase().includes(searchQuery.toLowerCase()) || music.singer.toLowerCase().includes(searchQuery.toLowerCase()))
+  );
 
   return (
     <Box sx={pageStyles.mainBox}>
@@ -41,7 +43,32 @@ const MusicChartPage = () => {
           transition={{ duration: 0.6 }}
         >
           <Box sx={pageStyles.titleContainer}>
-            <Box sx={{ width: 150 }} />
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+              <TextField
+                label="검색"
+                variant="standard"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                sx={{
+                  ...pageStyles.searchField,
+                  '& .MuiInputBase-input': {
+                    color: 'white',
+                  },
+                  '& .MuiInputLabel-root': {
+                    color: 'white',
+                  },
+                  '& .MuiInput-underline:before': {
+                    borderBottom: 'none',
+                  },
+                  '& .MuiInput-underline:after': {
+                    borderBottom: 'none',
+                  },
+                  '& .MuiInput-underline:hover:not(.Mui-disabled):before': {
+                    borderBottom: 'none',
+                  },
+                }}
+              />
+            </Box>
             
             <Box sx={pageStyles.titleBox}>
               <Typography variant="h2" sx={pageStyles.titleTypography}>
@@ -50,12 +77,31 @@ const MusicChartPage = () => {
             </Box>
 
             <FormControl sx={pageStyles.genreSelect}>
-              <InputLabel id="genre-select-label">장르</InputLabel>
+              <InputLabel id="genre-select-label" sx={{ color: 'white' }}>장르</InputLabel>
               <Select
                 labelId="genre-select-label"
                 value={selectedGenre}
                 label="장르"
                 onChange={(e) => setSelectedGenre(e.target.value)}
+                sx={{
+                  '& .MuiInputBase-input': {
+                    color: 'white',
+                  },
+                  '& .MuiInputLabel-root': {
+                    color: 'white',
+                  },
+                  '& .MuiOutlinedInput-root': {
+                    '& fieldset': {
+                      borderColor: 'white',
+                    },
+                    '&:hover fieldset': {
+                      borderColor: 'white',
+                    },
+                    '&.Mui-focused fieldset': {
+                      borderColor: 'white',
+                    },
+                  },
+                }}
               >
                 {genres.map((genre) => (
                   <MenuItem key={genre} value={genre}>{genre}</MenuItem>
