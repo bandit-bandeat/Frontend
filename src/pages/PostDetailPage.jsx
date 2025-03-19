@@ -40,7 +40,9 @@ const PostDetailPage = () => {
   const handleDelete = async () => {
     if (window.confirm('정말 삭제하시겠습니까?')) {
       try {
-        await postApi.deletePost(postId, 'your-token-here');
+        const accessToken = localStorage.getItem('accessToken'); // localStorage에서 액세스 토큰 가져오기
+    
+        await postApi.deletePost(postId, accessToken);
         navigate(`/community/${boardType}`);
       } catch (error) {
         console.error('Error deleting post:', error);

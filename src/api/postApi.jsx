@@ -58,7 +58,7 @@ const postApi = {
       const response = await axiosInstance.post('/post/write', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
-          'Authorization': `Bearer ${token}`,  // 토큰을 Authorization 헤더로 전송
+          'Authorization': `${token}`,  // 토큰을 Authorization 헤더로 전송
         },
       });
       return response.data;
@@ -151,10 +151,19 @@ const postApi = {
   // 게시글 삭제
   deletePost: async (postId, token) => {
     try {
-      const response = await axiosInstance.post(`/post/delete/${postId}`, { token });
+      const response = await axiosInstance.post(
+        `/post/delete/${postId}`,  // URL에 postId를 포함
+        null, // 본문을 비워둡니다
+        {
+          headers: {
+            'Authorization': `${token}`,  // Authorization 헤더에 토큰을 포함 (Bearer 토큰 형식)
+          }
+        }
+      );
+      console.log(response);
       return response.data;
     } catch (error) {
-      console.error('deletePost Error:', error);
+      console.error('deletePost Error:', error.response ? error.response.data : error.message);
       throw error;
     }
   },
