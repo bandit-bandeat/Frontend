@@ -58,7 +58,12 @@ const PostWritePage = () => {
   };
 
   return (
-    <Box sx={{ p: 3, maxWidth: 1000, margin: '0 auto' }}>
+    <Box sx={{ 
+      p: 3, 
+      maxWidth: '100%',
+      margin: '0 auto',
+      width: '900px'  
+    }}>
       <Paper elevation={3} sx={{ p: 3 }}>
         <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
           <IconButton onClick={() => navigate(-1)} sx={{ mr: 2 }}>
@@ -74,9 +79,11 @@ const PostWritePage = () => {
             <InputLabel id="kind-label">게시판 선택</InputLabel>
             <Select
               labelId="kind-label"
+              id="kind"
               name="kind"
               value={formData.kind}
               onChange={handleChange}
+              label="게시판 선택" 
               required
             >
               <MenuItem value="밴드 구인">밴드 구인 게시판</MenuItem>

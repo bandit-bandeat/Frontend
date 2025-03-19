@@ -11,7 +11,6 @@ import {
 import { useNavigate, Outlet, useLocation } from 'react-router-dom';
 import GroupsIcon from '@mui/icons-material/Groups';
 import SchoolIcon from '@mui/icons-material/School';
-import ForumIcon from '@mui/icons-material/Forum';
 import { Main, StyledListItem, drawerStyles } from '../styles/SidebarStyles';
 
 const CommunityBar = () => {
@@ -21,8 +20,7 @@ const CommunityBar = () => {
 
   const boardTypes = [
     { name: '밴드 구인', icon: <GroupsIcon />, path: 'band' },
-    { name: '과외 구인', icon: <SchoolIcon />, path: 'lesson' },
-    { name: '자유게시판', icon: <ForumIcon />, path: 'free' },
+    { name: '과외 구인', icon: <SchoolIcon />, path: 'lesson' }
   ];
 
   return (
