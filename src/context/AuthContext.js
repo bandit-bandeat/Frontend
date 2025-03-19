@@ -1,9 +1,10 @@
-import React, { createContext, useState, useEffect, useContext } from 'react';
+import React, { createContext, useState, useContext } from 'react';
 import { logout } from '../api/authApi';
 
 const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [user, setUser] = useState(null);
   const handleLogout = async () => {
     try {
       await logout();
@@ -14,22 +15,47 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const authLogin = () => {
+  const authLogin = (userData) => {
     setIsLoggedIn(true);
+    setUser(userData);
+  }
+
+  const membershipChange = () => {
+    const nowMem = user.userDto.membership;
+    if (nowMem === 0) {
+      setUser(prevUser => ({
+        ...prevUser,  // 기존 user 객체 유지
+        userDto: {
+          ...prevUser.userDto,  // 기존 userDto 객체 유지
+          membership: 1 // membership 값 변경
+        }
+      }));
+    }
+    else{
+      setUser(prevUser => ({
+        ...prevUser,  // 기존 user 객체 유지
+        userDto: {
+          ...prevUser.userDto,  // 기존 userDto 객체 유지
+          membership: 0 // membership 값 변경
+        }
+      }));
+    }
   }
 
   const value = {
     isLoggedIn,
     setIsLoggedIn,
     logout: handleLogout,
-    authLogin
+    authLogin,
+    user,
+    membershipChange
   };
 
 
   return (
-    <AuthContext.Provider value={value}>
-      {children}
-    </AuthContext.Provider>
+      <AuthContext.Provider value={value}>
+        {children}
+      </AuthContext.Provider>
   );
 };
 

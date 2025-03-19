@@ -27,8 +27,9 @@ function Login() {
     setLoading(true);
     try {
       console.log('Login form data:', formData);
-      await login(formData.email, formData.password);
-      authLogin(); // 로그인 상태 업데이트
+      const userData = await login(formData.email, formData.password);
+      authLogin(userData); // 로그인 상태 업데이트, userDto 저장
+      console.log("유저 데이터: ", userData);
       navigate('/'); 
     } catch (error) {
       console.error('Login error:', error.message || '로그인에 실패했습니다.');

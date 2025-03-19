@@ -1,5 +1,5 @@
-import { styled } from '@mui/material/styles';
-import { ListItem } from '@mui/material';
+import { styled } from '@mui/material/styles';  // 세미콜론 추가
+import { ListItem } from '@mui/material';  // 세미콜론 추가
 
 export const drawerWidth = 280;
 

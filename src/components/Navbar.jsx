@@ -80,7 +80,7 @@ const Navbar = () => {
           <NavButton component={Link} to="/create">
             Create
           </NavButton>
-          <NavButton component={Link} to="/community">
+          <NavButton component={Link} to="/community/free">
             Community
           </NavButton>
           <NavButton component={Link} to="/music">

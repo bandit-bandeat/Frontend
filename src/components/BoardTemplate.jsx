@@ -18,14 +18,14 @@ import { useNavigate } from 'react-router-dom';
 import SearchIcon from '@mui/icons-material/Search';
 import CreateIcon from '@mui/icons-material/Create';
 
-const BoardTemplate = ({ 
-  title, 
-  posts, 
-  onSearch, 
-  totalPages, 
-  currentPage, 
+const BoardTemplate = ({
+  title,
+  posts,
+  onSearch,
+  totalPages,
+  currentPage,
   onPageChange,
-  boardType  
+  boardType
 }) => {
   const navigate = useNavigate();
 
@@ -35,9 +35,9 @@ const BoardTemplate = ({
         <Typography variant="h4" component="h1">
           {title}
         </Typography>
-        <Button 
-          variant="contained" 
-          color="secondary" 
+        <Button
+          variant="contained"
+          color="secondary"
           startIcon={<CreateIcon />}
           onClick={() => navigate(`/community/${boardType}/write`)}
         >
@@ -69,22 +69,23 @@ const BoardTemplate = ({
               <TableCell width="50%">제목</TableCell>
               <TableCell width="15%">작성자</TableCell>
               <TableCell width="15%">작성일</TableCell>
-              <TableCell width="10%">조회</TableCell>
+              <TableCell width="10%">조회수</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {posts.map((post) => (
-              <TableRow 
-                key={post.id} 
-                hover 
-                onClick={() => navigate(`/community/${boardType}/${post.id}`)}
+              <TableRow
+                key={post.postId}
+                hover
+                onClick={() => navigate(`/community/${boardType}/${post.postId}`)}
                 sx={{ cursor: 'pointer' }}
               >
-                <TableCell>{post.id}</TableCell>
+                {/* <tr> 태그에 불필요한 공백이 없도록 하여 Hydration 오류를 방지합니다. */}
+                <TableCell>{post.postId}</TableCell>
                 <TableCell>{post.title}</TableCell>
-                <TableCell>{post.author}</TableCell>
-                <TableCell>{post.date}</TableCell>
-                <TableCell>{post.views}</TableCell>
+                <TableCell>{post.nickname}</TableCell> {/* 작성자 닉네임 표시 */}
+                <TableCell>{post.created}</TableCell>
+                <TableCell>{post.cnt}</TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -92,8 +93,8 @@ const BoardTemplate = ({
       </TableContainer>
 
       <Box sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}>
-        <Pagination 
-          count={totalPages} 
+        <Pagination
+          count={totalPages}
           page={currentPage}
           onChange={(e, page) => onPageChange(page)}
           color="secondary"

@@ -41,8 +41,16 @@ const PostWritePage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const accessToken = localStorage.getItem('accessToken'); // localStorage에서 액세스 토큰 가져오기
+  
+    if (!accessToken) {
+      console.error('Access token is missing');
+      return;
+    }
+
     try {
-      await postApi.writePost(formData.title, formData.content, formData.kind, 'your-token-here', formData.files);
+      // 게시글 작성 API 호출
+      await postApi.writePost(formData.title, formData.content, formData.kind, accessToken, formData.files);
       navigate(`/community/${formData.kind}`);
     } catch (error) {
       console.error('Error writing post:', error.response ? error.response.data : error.message);
@@ -71,9 +79,8 @@ const PostWritePage = () => {
               onChange={handleChange}
               required
             >
-              <MenuItem value="band">밴드 구인 게시판</MenuItem>
-              <MenuItem value="lesson">과외 구인 게시판</MenuItem>
-              <MenuItem value="free">자유게시판</MenuItem>
+              <MenuItem value="밴드 구인">밴드 구인 게시판</MenuItem>
+              <MenuItem value="과외 구인">과외 구인 게시판</MenuItem>
             </Select>
           </FormControl>
 

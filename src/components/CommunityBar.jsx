@@ -48,10 +48,10 @@ const CommunityBar = () => {
         <List>
           {boardTypes.map((board) => (
             <StyledListItem
-              button
               key={board.path}
               onClick={() => navigate(`/community/${board.path}`)}
-              isSelected={currentPath === board.path}
+              selected={currentPath === board.path}
+              // button prop을 제거
             >
               <ListItemIcon>{board.icon}</ListItemIcon>
               <ListItemText primary={board.name} />

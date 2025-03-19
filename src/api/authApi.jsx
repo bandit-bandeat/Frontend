@@ -9,8 +9,7 @@ export const login = async (email, password) => {
     const response = await axios.post(`${API_BASE_URL}/auth/login`, qs.stringify({ email, password }), {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded'
-      },
-      withCredentials: true
+      }
     });
     console.log('Login response:', response.data);
     // 엑세스토큰 저장
