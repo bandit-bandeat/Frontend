@@ -32,16 +32,17 @@ const BoardPage = () => {
 
   useEffect(() => {
     const fetchPosts = async () => {
+      console.log("패치 시작");
+      console.log("보드타입 출력: ", boardType);
       try {
         let data;
-        if (boardType === 'free') {
+        if (boardType === "band") {
+          data = await postApi.getPostsByKind(postsPerPage, currentPage - 1, "밴드 구인");
+        } else if(boardType === "lesson"){
+          data = await postApi.getPostsByKind(postsPerPage, currentPage - 1, "과외 구인");
+        }
+        else{
           data = await postApi.getAllPosts(postsPerPage, currentPage - 1);
-        } else {
-          if (boardType === "band") {
-            data = await postApi.getPostsByKind(postsPerPage, currentPage - 1, "밴드 구인");
-          } else {
-            data = await postApi.getPostsByKind(postsPerPage, currentPage - 1, "과외 구인");
-          }
         }
         
         // 닉네임도 함께 가져오는 예시
@@ -51,6 +52,7 @@ const BoardPage = () => {
         setNicknames(fetchedNicknames); // 닉네임 데이터 설정
         setTotalPages(Math.ceil(data.total / postsPerPage)); // 페이지 총 개수 설정
       } catch (error) {
+        console.error("에러에러");
         console.error('Error fetching posts:', error);
       }
     };

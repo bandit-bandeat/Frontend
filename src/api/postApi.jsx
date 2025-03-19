@@ -17,7 +17,7 @@ axiosInstance.interceptors.request.use(
   config => {
     const accessToken = localStorage.getItem('accessToken');
     if (accessToken) {
-      config.headers['Authorization'] = `Bearer ${accessToken}`;
+      //config.headers['Authorization'] = `Bearer ${accessToken}`;
     }
     return config;
   },
@@ -32,10 +32,10 @@ axiosInstance.interceptors.response.use(
     return response;
   },
   error => {
-    if (error.response && error.response.status === 401) {
-      localStorage.removeItem('accessToken');
-      window.location.href = '/login';
-    }
+    // if (error.response && error.response.status === 401) {
+    //   localStorage.removeItem('accessToken');
+    //   window.location.href = '/login';
+    // }
     return Promise.reject(error);
   }
 );
@@ -87,6 +87,7 @@ const postApi = {
       const response = await axiosInstance.get('/post/get/kind', {
         params: { size, page, kind },
       });
+      console.log("게시판 불러오는 중: ", kind);
       return response.data;
     } catch (error) {
       console.error('getPostsByKind Error:', error);
