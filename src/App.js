@@ -25,6 +25,7 @@ import MyPage from './pages/MyPage';
 import BoardPage from './pages/BoardPage';
 import PostDetailPage from './pages/PostDetailPage';
 import PostWritePage from './pages/PostWritePage';
+import PostEditPage from './pages/PostEditPage';
 import EatBotIntro from './pages/EatBotIntro';
 import MusicChartPage from './pages/MusicChartPage';
 import MusicDetailPage from './pages/MusicDetailPage';
@@ -61,6 +62,7 @@ function App() {
               <Route path=":boardType" element={<BoardPage />} />
               <Route path=":boardType/write" element={<PostWritePage />} />
               <Route path=":boardType/:postId" element={<PostDetailPage />} />
+              <Route path=":boardType/edit/:postId" element={<PostEditPage />} />
             </Route>
           
             {/* 음악 차트 페이지 */}

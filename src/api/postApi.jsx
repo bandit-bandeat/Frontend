@@ -112,15 +112,15 @@ const postApi = {
     const formData = new FormData();
     formData.append('postId', postId);
     formData.append('content', content);
-    formData.append('token', token);
-    if (files) {
+    if (Array.isArray(files)) {
       files.forEach(file => formData.append('files', file));
     }
-
+    console.log("토큰확인 2: ", token);
     try {
       const response = await axiosInstance.post('/post/update', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
+          'Authorization': token,
         },
       });
       return response.data;
