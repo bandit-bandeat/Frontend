@@ -1,97 +1,121 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import BoardTemplate from '../components/BoardTemplate';
-import postApi from '../api/postApi';
+import { useParams, useNavigate } from 'react-router-dom';  // useParams, useNavigate import
+import {
+  Box,
+  Paper,
+  Typography,
+  Button,
+  Divider,
+  Avatar,
+  IconButton,
+} from '@mui/material';  // MUI 컴포넌트들 import
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';  // 아이콘들 import
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import postApi from '../api/postApi';  // postApi import
 
-const BoardPage = () => {
-  const { boardType } = useParams();
-  const [currentPage, setCurrentPage] = useState(1);
-  const [posts, setPosts] = useState([]);
-  const [nicknames, setNicknames] = useState([]);  // 닉네임 배열 상태 추가
-  const [totalPages, setTotalPages] = useState(1);
-  const postsPerPage = 10;
-
-  const boardTypes = {
-    band: { 
-      title: "밴드 구인 게시판",
-      description: "밴드 멤버를 구인하는 게시판입니다."
-    },
-    lesson: { 
-      title: "과외 구인 게시판",
-      description: "음악 과외 선생님을 구하는 게시판입니다."
-    },
-    free: { 
-      title: "자유게시판",
-      description: "자유롭게 이야기를 나누는 게시판입니다."
-    },
-    all: {
-      title: "전체 게시판",
-      description: "전체 게시글을 확인할 수 있는 게시판입니다."
-    }
-  };
+const PostDetailPage = () => {
+  const { boardType, postId } = useParams();
+  const navigate = useNavigate();
+  const [post, setPost] = useState(null);
+  const [writerName, setWriterName] = useState('작성자 없음');
+  const [writerInitial, setWriterInitial] = useState('');
 
   useEffect(() => {
-    const fetchPosts = async () => {
+    const fetchPost = async () => {
       try {
-        let data;
-        if (boardType === 'free') {
-          data = await postApi.getAllPosts(postsPerPage, currentPage - 1);
-        } else {
-          if (boardType === "band") {
-            data = await postApi.getPostsByKind(postsPerPage, currentPage - 1, "밴드 구인");
-          } else {
-            data = await postApi.getPostsByKind(postsPerPage, currentPage - 1, "과외 구인");
-          }
-        }
-
-        // 닉네임도 함께 가져오는 예시
-        const fetchedNicknames = data.nickname || [];
-        
-        setPosts(data.post || []); // 게시글 데이터 설정
-        setNicknames(fetchedNicknames); // 닉네임 데이터 설정
-        setTotalPages(Math.ceil(data.total / postsPerPage)); // 페이지 총 개수 설정
+        const data = await postApi.getPostDetail(postId);
+        setPost(data?.post || {});  // 응답 데이터의 post가 없으면 빈 객체 할당
+        const writer = data?.writer || '작성자 없음';
+        setWriterName(writer);
+        setWriterInitial(writer.charAt(0));  // 작성자의 첫 글자
       } catch (error) {
-        console.error('Error fetching posts:', error);
+        console.error('Error fetching post:', error);
       }
     };
 
-    fetchPosts();
-  }, [boardType, currentPage]);
+    fetchPost();
+  }, [postId]);
 
-  const handleSearch = async (keyword) => {
-    console.log('Searching:', keyword);
-    try {
-      const data = await postApi.searchPosts(boardType, keyword, postsPerPage, currentPage - 1);
-      setPosts(data.post || []);
-      setNicknames(data.nickname || []);
-      setTotalPages(Math.ceil(data.total / postsPerPage));
-    } catch (error) {
-      console.error('Error searching posts:', error);
+  const handleDelete = async () => {
+    if (window.confirm('정말 삭제하시겠습니까?')) {
+      try {
+        await postApi.deletePost(postId, 'your-token-here');
+        navigate(`/community/${boardType}`);
+      } catch (error) {
+        console.error('Error deleting post:', error);
+      }
     }
   };
 
-  const getCurrentPagePosts = () => {
-    const startIndex = (currentPage - 1) * postsPerPage;
-    return posts.slice(startIndex, startIndex + postsPerPage);
-  };
-
-  // posts와 nicknames를 합침
-  const postsWithNicknames = posts.map((post, index) => ({
-    ...post,
-    nickname: nicknames[index] || "익명",  // nickname 배열을 순차적으로 매칭, 없으면 "익명"으로 설정
-  }));
+  if (!post) {
+    return <Typography>Loading...</Typography>;
+  }
 
   return (
-    <BoardTemplate
-      title={boardTypes[boardType]?.title || "게시판"}
-      posts={postsWithNicknames}  // 수정된 postsWithNicknames 전달
-      onSearch={handleSearch}
-      totalPages={totalPages}
-      currentPage={currentPage}
-      onPageChange={setCurrentPage}
-      boardType={boardType}
-    />
+    <Box sx={{ p: 3, maxWidth: 1000, margin: '0 auto' }}>
+      <Paper elevation={3} sx={{ p: 3 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+          <IconButton onClick={() => navigate(`/community/${boardType}`)} sx={{ mr: 2 }}>
+            <ArrowBackIcon />
+          </IconButton>
+          <Typography variant="h5" component="h1" sx={{ flexGrow: 1 }}>
+            {post.title || '제목 없음'} {/* 제목이 없을 경우 기본값 설정 */}
+          </Typography>
+        </Box>
+
+        <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+          <Avatar sx={{ mr: 2 }}>{writerInitial}</Avatar> {/* 작성자의 첫 글자를 기본값으로 사용 */}
+          <Box>
+            <Typography variant="subtitle1">{writerName}</Typography>
+            <Typography variant="body2" color="text.secondary">
+              {post.created || '날짜 없음'} • 조회 {post.cnt || 0}
+            </Typography>
+          </Box>
+        </Box>
+
+        <Divider sx={{ my: 3 }} />
+
+        <Typography 
+          variant="body1" 
+          sx={{ 
+            minHeight: '200px', 
+            mb: 3,
+            whiteSpace: 'pre-wrap'
+          }}
+        >
+          {post.content || '내용 없음'} {/* 내용이 없을 경우 기본값 설정 */}
+        </Typography>
+
+        <Divider sx={{ my: 3 }} />
+
+        <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+          <Button
+            startIcon={<ArrowBackIcon />}
+            onClick={() => navigate(`/community/${boardType}`)}
+          >
+            목록으로
+          </Button>
+          <Box>
+            <Button
+              startIcon={<EditIcon />}
+              sx={{ mr: 1 }}
+              onClick={() => navigate(`/community/${boardType}/edit/${postId}`)}
+            >
+              수정
+            </Button>
+            <Button
+              startIcon={<DeleteIcon />}
+              color="error"
+              onClick={handleDelete}
+            >
+              삭제
+            </Button>
+          </Box>
+        </Box>
+      </Paper>
+    </Box>
   );
 };
 
-export default BoardPage;
+export default PostDetailPage;
