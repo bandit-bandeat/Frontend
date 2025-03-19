@@ -6,8 +6,8 @@ import { motion } from 'framer-motion';
 const EatBotIntro = () => {
   const features = [
     {
-      title: "음원 봇",
-      description: "똑똑한 AI가 당신만의 특별한 멜로디를 요리해드려요! 🎵",
+      title: "악기 봇",
+      description: "초보자부터 고수까지, 실력에 맞는 악기를 골라드려요! 🎯",
       position: 'left'
     },
     {
@@ -16,12 +16,12 @@ const EatBotIntro = () => {
       position: 'right'
     },
     {
-      title: "추천 봇",
-      description: "당신의 취향을 저격하는 특별 메뉴를 준비했어요! 🎯",
+      title: "플리 봇",
+      description: "당신의 취향을 저격하는 특별 메뉴를 준비했어요! 🎵",
       position: 'left'
     },
     {
-      title: "이미지 봇",
+      title: "로고 봇",
       description: "밴드의 개성을 담은 로고를 맛있게 디자인해드려요! 🎨",
       position: 'right'
     }
@@ -171,7 +171,7 @@ const EatBotIntro = () => {
                 letterSpacing: '0.5px',
               }}
             >
-              4가지 AI봇이 음악을 더 맛있게 만들어드려요 ✨
+              당신의 밴드를 위한 특별한 AI 파트너들이 함께합니다 ✨
             </Typography>
           </motion.div>
         </motion.div>
