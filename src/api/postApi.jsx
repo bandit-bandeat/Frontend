@@ -43,6 +43,7 @@ axiosInstance.interceptors.response.use(
 const postApi = {
   // 게시글 작성
   writePost: async (title, content, kind, token, files) => {
+    console.log(title)
     const formData = new FormData();
     formData.append('title', title);
     formData.append('content', content);
@@ -146,7 +147,7 @@ const postApi = {
     }
   },
 
-  
+
   // 게시글 삭제
   deletePost: async (postId, token) => {
     try {

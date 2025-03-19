@@ -41,8 +41,8 @@ const PostWritePage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const accessToken = localStorage.getItem('accessToken'); // localStorage에서 액세스 토큰 가져오기
-
+    //const accessToken = localStorage.getItem('accessToken'); // localStorage에서 액세스 토큰 가져오기
+    const accessToken = "eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6IjEiLCJyb2xlIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzQyMzQ5NjM1LCJleHAiOjE3NDIzODU2MzV9.VVR9BbXUS2G8MAZe454jfu7TIYqEpyraGmto6CA0am4"
     if (!accessToken) {
       console.error('Access token is missing');
       return;
@@ -50,7 +50,6 @@ const PostWritePage = () => {
 
     try {
       // 게시글 작성 API 호출
-      accessToken = "eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6IjEiLCJyb2xlIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzQyMzQ5NjM1LCJleHAiOjE3NDIzODU2MzV9.VVR9BbXUS2G8MAZe454jfu7TIYqEpyraGmto6CA0am4"
       await postApi.writePost(formData.title, formData.content, formData.kind, accessToken, formData.files);
       navigate(`/community/${formData.kind}`);
     } catch (error) {
