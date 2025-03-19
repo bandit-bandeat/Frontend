@@ -2,12 +2,8 @@ import React, { createContext, useState, useEffect, useContext } from 'react';
 import { logout } from '../api/authApi';
 
 const AuthContext = createContext();
-
 export const AuthProvider = ({ children }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(() => {
-    return !!localStorage.getItem('accessToken');
-  });
-
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const handleLogout = async () => {
     try {
       await logout();
@@ -18,11 +14,17 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const authLogin = () => {
+    setIsLoggedIn(true);
+  }
+
   const value = {
     isLoggedIn,
     setIsLoggedIn,
-    logout: handleLogout
+    logout: handleLogout,
+    authLogin
   };
+
 
   return (
     <AuthContext.Provider value={value}>
@@ -30,6 +32,7 @@ export const AuthProvider = ({ children }) => {
     </AuthContext.Provider>
   );
 };
+
 
 export const useAuth = () => {
   const context = useContext(AuthContext);

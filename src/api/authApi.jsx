@@ -9,7 +9,8 @@ export const login = async (email, password) => {
     const response = await axios.post(`${API_BASE_URL}/auth/login`, qs.stringify({ email, password }), {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded'
-      }
+      },
+      withCredentials: true
     });
     console.log('Login response:', response.data);
     // 엑세스토큰 저장
@@ -26,12 +27,10 @@ export const login = async (email, password) => {
 export const logout = async () => {
   try {
     const token = localStorage.getItem('accessToken');
-    await axios.post(`${API_BASE_URL}/auth/logout`, {}, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      },
+    const response = await axios.post(`${API_BASE_URL}/auth/logout`, {}, {
       withCredentials: true
     });
+    console.log(response)
   } finally {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('email');
