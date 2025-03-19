@@ -79,8 +79,8 @@ const PostWritePage = () => {
               onChange={handleChange}
               required
             >
-              <MenuItem value="band">밴드 구인 게시판</MenuItem>
-              <MenuItem value="lesson">과외 구인 게시판</MenuItem>
+              <MenuItem value="밴드 구인">밴드 구인 게시판</MenuItem>
+              <MenuItem value="과외 구인">과외 구인 게시판</MenuItem>
             </Select>
           </FormControl>
 

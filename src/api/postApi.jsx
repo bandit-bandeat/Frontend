@@ -15,6 +15,7 @@ const axiosInstance = axios.create({
 // 요청 인터셉터
 axiosInstance.interceptors.request.use(
   config => {
+    // 게시글 볼 때는 엑세스 토큰 필요 없음
     const accessToken = localStorage.getItem('accessToken');
     if (accessToken) {
       //config.headers['Authorization'] = `Bearer ${accessToken}`;
