@@ -1,18 +1,11 @@
 import React from 'react';
-import { 
-  Box, 
-  Drawer, 
-  List, 
-  ListItemIcon, 
-  ListItemText,
-  Typography,
-  Divider 
-} from '@mui/material';
+import { Box, Drawer, List, ListItemIcon, ListItemText, Typography, Divider } from '@mui/material';
 import { useNavigate, Outlet, useLocation } from 'react-router-dom';
 import MusicNoteIcon from '@mui/icons-material/MusicNote';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import RecommendIcon from '@mui/icons-material/Recommend';
 import ImageIcon from '@mui/icons-material/Image';
+
 import SmartToyIcon from '@mui/icons-material/SmartToy';
 import Mic from '@mui/icons-material/Mic';
 import { Main, StyledListItem, drawerStyles } from '../styles/SidebarStyles';
@@ -41,9 +34,9 @@ const CreateBar = () => {
   };
 
   const botTypes = [
-    { name: '음원 봇', icon: <MusicNoteIcon />, path: 'music' },
+    { name: '악기 봇', icon: <MusicNoteIcon />, path: 'music' },
     { name: '코드 봇', icon: <AutoAwesomeIcon />, path: 'chord' },
-    { name: '추천 봇', icon: <RecommendIcon />, path: 'recommend' },
+    { name: '플리 봇', icon: <RecommendIcon />, path: 'recommend' },
     { name: '이미지 봇', icon: <ImageIcon />, path: 'image' },
     { name: 'MP3 변환기', icon: <Mic />, path: 'mp3'}
   ];
