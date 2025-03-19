@@ -26,12 +26,10 @@ export const login = async (email, password) => {
 export const logout = async () => {
   try {
     const token = localStorage.getItem('accessToken');
-    await axios.post(`${API_BASE_URL}/auth/logout`, {}, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      },
+    const response = await axios.post(`${API_BASE_URL}/auth/logout`, {}, {
       withCredentials: true
     });
+    console.log(response)
   } finally {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('email');
