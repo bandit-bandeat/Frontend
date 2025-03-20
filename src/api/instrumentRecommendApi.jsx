@@ -1,15 +1,16 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'http://127.0.0.1:5000';
+const API_BASE_URL ='http://18.139.20.145:8080';
 
 export const instrumentRecommendApi = {
   getRecommendations: async (message) => {
     try {
-      const response = await axios.post(`${API_BASE_URL}/ins/recommend`, 
+      const response = await axios.post(`${API_BASE_URL}/ins/recommend`,
         { message },
         {
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'AccessToken':localStorage.getItem('accessToken')
           }
         }
       );
