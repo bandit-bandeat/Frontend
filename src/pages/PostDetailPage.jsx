@@ -13,6 +13,11 @@ import axios from 'axios';
 
 const BASE_URL = 'http://18.139.20.145:8080';
 
+
+
+
+
+
 const PostDetailPage = () => {
   const { boardType, postId } = useParams();
   const navigate = useNavigate();
@@ -26,10 +31,12 @@ const PostDetailPage = () => {
   const [isPostLiked, setIsPostLiked] = useState(false);
   const [postLikeCount, setPostLikeCount] = useState(0);
 
+
   useEffect(() => {
     const fetchPost = async () => {
+      const email = localStorage.getItem('email');
       try {
-        const data = await postApi.getPostDetail(postId);
+        const data = await postApi.getPostDetail(postId,email);
         setPost(data.post); // 응답 데이터의 post가 없으면 빈 객체 할당
         const writer = data?.writer || '작성자 없음';
         setWriterName(writer);
@@ -37,7 +44,7 @@ const PostDetailPage = () => {
 
         // 이메일 출력 확인 -> 이걸 통해 작성자만 삭제/ 수정 버튼 보이게
         setComments(data.commentList || []);
-        setIsPostLiked(data.post?.isLiked || false);
+        setIsPostLiked(data.post?.isLike || false);
         setPostLikeCount(data.post?.heart || 0);
         
       } catch (error) {
@@ -66,8 +73,8 @@ const PostDetailPage = () => {
       });
       
       console.log("좋아요 응답:", response.data);
-      
-      const updatedPost = await postApi.getPostDetail(postId);
+      const email = localStorage.getItem('email');
+      const updatedPost = await postApi.getPostDetail(postId,email);
       setIsPostLiked(updatedPost.post.isLiked);
       setPostLikeCount(updatedPost.post.likeCount);
     } catch (error) {
@@ -100,7 +107,8 @@ const PostDetailPage = () => {
       await postApi.writeComment(accessToken, postId, newComment);
       setNewComment('');
       // 댓글 작성 후 게시글 다시 조회
-      const updatedPost = await postApi.getPostDetail(postId);
+      const email = localStorage.getItem('email');
+      const updatedPost = await postApi.getPostDetail(postId,email);
       setComments(updatedPost.commentList || []);
     } catch (error) {
       console.error('댓글 작성 실패:', error);
@@ -115,7 +123,8 @@ const PostDetailPage = () => {
       const accessToken = localStorage.getItem('accessToken');
       await postApi.deleteComment(accessToken, cmtId);  // cmtId로 수정
       // 댓글 삭제 후 게시글 다시 조회
-      const updatedPost = await postApi.getPostDetail(postId);
+      const email = localStorage.getItem('email');
+      const updatedPost = await postApi.getPostDetail(postId,email);
       setComments(updatedPost.commentList || []);
     } catch (error) {
       console.error('댓글 삭제 실패:', error);
@@ -133,7 +142,8 @@ const PostDetailPage = () => {
       const accessToken = localStorage.getItem('accessToken');
       await postApi.likeComment(accessToken, cmtId);  // cmtId로 수정
       // 좋아요 후 게시글 다시 조회
-      const updatedPost = await postApi.getPostDetail(postId);
+      const email = localStorage.getItem('email');
+      const updatedPost = await postApi.getPostDetail(postId,email);
       setComments(updatedPost.commentList || []);
     } catch (error) {
       console.error('댓글 좋아요 실패:', error);
@@ -284,16 +294,18 @@ const PostDetailPage = () => {
                     }
                   />
                   {/* 삭제/좋아요 버튼 */}
-                  {nowUser === comment.email && (
+                  
                     <Box>
+                      {nowUser === comment.email && (
                       <IconButton onClick={() => handleCommentDelete(comment.cmtId)}>
                         <DeleteIcon fontSize="small" />
                       </IconButton>
+                      )}
                       <IconButton onClick={() => handleCommentLike(comment.cmtId)}>
                         <FavoriteBorderIcon fontSize="small" />
                       </IconButton>
                     </Box>
-                  )}
+                  
                 </ListItem>
               ))}
             </List>

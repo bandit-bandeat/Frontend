@@ -97,9 +97,15 @@ const postApi = {
   },
 
   // 게시글 상세 조회
-  getPostDetail: async (postId) => {
+  getPostDetail: async (postId, email) => {
+    const formData = new FormData();
+    formData.append('email', email);
+    console.log(email)
     try {
-      const response = await axiosInstance.get(`/post/${postId}`);
+      const response = await axiosInstance.get(`/post/${postId}`,{
+        params: { email }
+      });
+      console.log(response.data)
       return response.data;
     } catch (error) {
       console.error('getPostDetail Error:', error);
