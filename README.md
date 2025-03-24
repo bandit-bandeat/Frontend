@@ -11,7 +11,7 @@
 2. 악기 추천
 - 사용자 예산 범위 내 최적 악기 추천
 
-3. 맞춤형 곡 추천
+3. 곡 추천
 - 멤버들의 음악 취향을 통합 분석하여 최적의 곡 추천
 
 4. 로고 생성
@@ -26,9 +26,11 @@
 
 ## 시작하기 
 
-### 필요한 패키지 설치
-
 ```bash
+# 기본 패키지 설치
+npm install
+
+# 추가 패키지 설치
 npm install @mui/material @emotion/react @emotion/styled @mui/icons-material react-router-dom framer-motion
 npm install react-tsparticles tsparticles
 ```
@@ -47,5 +49,5 @@ src/
 ├── components/      
 ├── context/       
 ├── pages/       
-├── styles/
+└── styles/
 ```
